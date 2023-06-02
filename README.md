@@ -1,14 +1,21 @@
 ## Overview
 
-[![Build Status](https://travis-ci.org/official-stockfish/Stockfish.svg?branch=master)](https://travis-ci.org/official-stockfish/Stockfish)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/official-stockfish/Stockfish?branch=master&svg=true)](https://ci.appveyor.com/project/mcostalba/stockfish/branch/master)
-
 [Stockfish](https://stockfishchess.org) is a free, powerful UCI chess engine
-derived from Glaurung 2.1. Stockfish is not a complete chess program and requires a
-UCI-compatible graphical user interface (GUI) (e.g. XBoard with PolyGlot, Scid,
-Cute Chess, eboard, Arena, Sigma Chess, Shredder, Chess Partner or Fritz) in order
-to be used comfortably. Read the documentation for your GUI of choice for information
-about how to use Stockfish with it.
+derived from Glaurung 2.1. However, this is not the original Stockfish and doesn't
+actually improve upon it in any way, unfortunately.
+
+This is Fat Fritz 2, a Stockfish derivative that uses mostly the same code, with a few
+minor changes, along with a custom neural network [made by Albert Silver for the company
+ChessBase](https://www.youtube.com/watch?v=1TabPJxO84o). This is not an official GitHub
+repository for Fat Fritz 2 or for Stockfish, but instead an unofficial repository to document how
+[Fat Fritz 2 is a ripoff of Stockfish](https://lichess.org/blog/YCvy7xMAACIA8007/fat-fritz-2-is-a-rip-off)
+and make it freely available on GitHub to anyone who is curious.
+
+The Stockfish derivative Fat Fritz 2 is not a complete chess program, and requires a
+UCI-compatible graphical user interface (GUI) (e.g. XBoard with PolyGlot, Scid, Cute Chess,
+eboard, Arena, Sigma Chess, Shredder, Chess Partner or Fritz) in order to be used comfortably.
+Read the documentation for your GUI of choice for information about how to use this Stockfish
+derivative with it.
 
 The Stockfish engine features two evaluation functions for chess, the classical
 evaluation based on handcrafted terms, and the NNUE evaluation based on efficiently
@@ -16,10 +23,58 @@ updatable neural networks. The classical evaluation runs efficiently on almost a
 CPU architectures, while the NNUE evaluation benefits from the vector
 intrinsics available on most CPUs (sse2, avx2, neon, or similar).
 
+The NNUE is the only part modified in the Fat Fritz 2 derivative of Stockfish. Everything
+else is the same as an original developer build of Stockfish, [commit
+0266e702970640df693a8e572dd3cb9d227cdfc6](https://github.com/official-stockfish/Stockfish/commit/0266e702970640df693a8e572dd3cb9d227cdfc6),
+"Fix static_assert", which ddobbelaere authored and vondele committed on Jan 11, 2021. The
+many subsequent improvements to Stockfish since that date have not been incorporated into
+Fat Fritz 2 at all, so it is now much weaker than current Stockfish. Fat Fritz 2 has 2
+additional files added in the /src directory compared to the original Stockfish source
+code: compile.sh and FatFritz2_v1.bin. There are also a few minor changes to a few other
+files to accomodate the NNUE changes and rebrand it as Fat Fritz 2.
+
+You can find the official Stockfish repository here on [GitHub](https://github.com/official-stockfish/Stockfish),
+and the official Stockfish website at [stockfishchess.org](https://stockfishchess.org). The official Fat Fritz
+website is at [chessbase.com](https://en.chessbase.com/products/fat-fritz). Fat Fritz 2 is very
+controversial, and was the subject of a lawsuit by the Stockfish developers against ChessBase
+[which they wrote about here](https://stockfishchess.org/blog/2021/our-lawsuit-against-chessbase/), but the
+Stockfish developers and ChessBase reached a settlement
+[which you can read about here](https://stockfishchess.org/blog/2022/chessbase-stockfish-agreement/).
+
+Basically ChessBase violated the GNU GPL 3 and unethically used Stockfish's work without permission, charging money
+for it, and not making the source code publicly available, and a lawsuit was necessary to force them into
+compliance with the GNU GPL 3. They also made deceptive claims about Fat Fritz 2 being the strongest chess engine
+and about its level of originality, when, as you can see by the commit history, hardly anything was changed.
+
+Under the terms of this settlement, ChessBase has released Fat Fritz 2 for free as open source software under
+the GNU GPL 3, available for download at [foss.chessbase.com](https://foss.chessbase.com/#Stockfish). This
+unofficial GitHub repository for Fat Fritz 2 exists to make it more easily available and to provide a
+wider array of binaries than ChessBase has on its official website, and so people can see how little was changed
+in the source code for themselves. It is being distributed for free here in accordance with the GNU GPL 3.
+
+It should be noted that the original version of Fat Fritz was a derivative of [Leela Chess Zero](https://lczero.org/),
+not Stockfish, and the original Fat Fritz used a custom neural network that was derived from actual human games for the
+training data for the Leela Chess Zero chess engine, rather than using self-play like the neural networks made by the
+Leela Chess Zero project. This didn't actually make it any better than Leela Chess Zero, though.
+
+Then Fat Fritz 2, based on Stockfish, used the self-play of the original Fat Fritz based on Leela Chess Zero for
+development of its neural network. The neural networks for both versions of Fat Fritz were developed by Albert Silver
+for ChessBase, while the software was developed by the open-source community (Leela Chess Zero developers for the
+original Fat Fritz, and Stockfish developers for Fat Fritz 2). Development of the neural network for Fat Fritz 2 took
+very little work, and was done in only 2 days. It is not as good as official Stockfish.
+
+Please support the official releases of free and open-source chess engines like Stockfish, Leela Chess Zero, and others.
+This repository only exists to document how Fat Fritz 2 was initially made in violation of the GNU GPL based on
+minimal code changes, and to distribute its source code and binaries freely to anyone who is interested, in accordance
+with the GNU GPL 3, so that people can obtain its source code or binaries for free without having to pay any money. Also,
+please do not ask the authors of Stockfish or Leela Chess Zero to incorporate anything from Fat Fritz or Fat Fritz 2,
+since those were just cheap ripoffs of their work and did not actually improve on it at all, but just existed for
+ChessBase to make money off other people's work in violation of the GNU GPL.
+
 
 ## Files
 
-This distribution of Stockfish consists of the following files:
+This distribution of the Stockfish derivative Fat Fritz 2 consists of the following files:
 
   * Readme.md, the file you are currently reading.
 
@@ -28,18 +83,13 @@ This distribution of Stockfish consists of the following files:
   * src, a subdirectory containing the full source code, including a Makefile
     that can be used to compile Stockfish on Unix-like systems.
 
-  * a file with the .nnue extension, storing the neural network for the NNUE 
-    evaluation. Binary distributions will have this file embedded.
+  * the file FatFritz2_v1.bin, storing the neural network for the NNUE 
+    evaluation. Unlike official Stockfish, Fat Fritz 2 does not embed
+    this file in a binary distribution, but has it as a separate file.
 
 Note: to use the NNUE evaluation, the additional data file with neural network parameters
-needs to be available. Normally, this file is already embedded in the binary or it can be downloaded.
-The filename for the default (recommended) net can be found as the default
-value of the `EvalFile` UCI option, with the format `nn-[SHA256 first 12 digits].nnue`
-(for instance, `nn-c157e0a5755b.nnue`). This file can be downloaded from
-```
-https://tests.stockfishchess.org/api/nn/[filename]
-```
-replacing `[filename]` as needed.
+needs to be available. This file is called FatFritz2_v1.bin and should come with any distribution
+of the Fat Fritz 2 derivative of Stockfish.
 
 
 ## UCI options
@@ -167,7 +217,9 @@ is somewhat lower (roughly 60% of nps is typical).
 Note that the NNUE evaluation depends on the Stockfish binary and the network parameter
 file (see EvalFile). Not every parameter file is compatible with a given Stockfish binary.
 The default value of the EvalFile UCI option is the name of a network that is guaranteed
-to be compatible with that binary.
+to be compatible with that binary. In the Fat Fritz 2 Stockfish derivative, some changes
+have been made to the NNUE so it will only work with the Fat Fritz 2 NNUE and not a
+standard Stockfish NNUE.
 
 ## What to expect from Syzygybases?
 

@@ -43,6 +43,7 @@
 //     const unsigned char *const gEmbeddedNNUEEnd;     // a marker to the end
 //     const unsigned int         gEmbeddedNNUESize;    // the size of the embedded file
 // Note that this does not work in Microsof Visual Studio.
+#define NNUE_EMBEDDING_OFF
 #if !defined(_MSC_VER) && !defined(NNUE_EMBEDDING_OFF)
   INCBIN(EmbeddedNNUE, EvalFileDefaultName);
 #else
@@ -1053,7 +1054,7 @@ Value Eval::evaluate(const Position& pos) {
       // Scale and shift NNUE for compatibility with search and classical evaluation
       auto  adjusted_NNUE = [&](){
          int mat = pos.non_pawn_material() + PawnValueMg * pos.count<PAWN>();
-         return NNUE::evaluate(pos) * (679 + mat / 32) / 1024 + Tempo;
+         return NNUE::evaluate(pos) * (1210 + mat / 32) / 1024 + Tempo;
       };
 
       // If there is PSQ imbalance use classical eval, with small probability if it is small
